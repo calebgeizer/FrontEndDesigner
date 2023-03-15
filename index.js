@@ -4,13 +4,27 @@ import * as data from "./modules/convert.js";
 import * as edit from "./modules/edit.js";
 
 // Shortcuts List
-import { shortcutsList } from "./shortcuts.js";
+import { Manipulation, Storage } from "./shortcuts.js";
 
-let shortcuts = shortcutsList;
-shortcuts = shortcuts.reduce((acc, {myId, ...x}) => { acc[myId] = x; return acc}, {})
+let manipulation = Manipulation;
+manipulation = manipulation.reduce((acc, { myId, ...x }) => {
+  acc[myId] = x;
+  return acc;
+}, {});
+
+let storage = Storage;
+storage = storage.reduce((acc, { myId, ...x }) => {
+  acc[myId] = x;
+  return acc;
+}, {});
 
 console.group("Shortcuts");
-console.table(shortcuts);
+console.group("Manipulation");
+console.table(manipulation);
+console.groupEnd();
+console.group("Storage");
+console.table(storage);
+console.groupEnd();
 console.groupEnd();
 
 // * Double Click Makes Editable * //
@@ -21,12 +35,11 @@ document.addEventListener("dblclick", function (event) {
     checkWrap(core.id(getID()));
     core.id(getID()).contentEditable = true;
     core.id(getID()).className = "el block";
-    local.set("typing",1);
+    local.set("typing", 1);
   }
 });
 
-
-local.set("typing",0);
+local.set("typing", 0);
 
 //! START P Wrap Check
 function checkWrap(editableDiv) {
@@ -59,11 +72,9 @@ function checkWrap(editableDiv) {
 //     function(){ return(fn.call(elem, window.event)); });
 //   }}
 
-var element = document.getElementById('el');
-  
+var element = document.getElementById("el");
 
 //! END P Wrap Check
-
 
 function delEmptyP(divID) {
   const emptyChildren = document
@@ -120,20 +131,21 @@ function getID() {
 }
 
 const myDiv = document.querySelector("body");
-myDiv.addEventListener("click", function(event){
+myDiv.addEventListener("click", function (event) {
   let El = core.id(getID());
-  try{
-    if(event.target.id != getID() && event.target.parentElement.id != getID()){
+  try {
+    if (
+      event.target.id != getID() &&
+      event.target.parentElement.id != getID()
+    ) {
       core.id(getID()).contentEditable = false;
-      local.set('typing', 0);
+      local.set("typing", 0);
     }
     core.id(getID()).style.resize = "none";
     core.id(getID()).style.borderColor = "lightgray";
-  }catch{
-
-  }
+  } catch {}
   setID(event);
-  
+
   try {
     core.id(getID()).style.resize = "both";
     core.id(getID()).style.borderColor = "black";
@@ -160,36 +172,35 @@ function divNumGet() {
   return result;
 }
 
-
 //! When Press Shift+C, create colour picker
 
-document.addEventListener("keydown", function (event) {
+// ß ∂ ˜ ¬
+// S D N L
 
-  if(local.get('typing') == 1){
+document.addEventListener("keydown", function (event) {
+  if (local.get("typing") == 1) {
     return;
   }
 
-  if(event.shiftKey && event.key === 'S'){
+  if (event.shiftKey && event.key === "S") {
     save();
   }
 
-  if(event.shiftKey && event.key === 'D'){
+  if (event.shiftKey && event.key === "D") {
     data.saveHTML();
   }
 
-  if(event.shiftKey && event.key === 'L'){
+  if (event.shiftKey && event.key === "L") {
     load();
   }
 
-
-  if(event.shiftKey && event.key == "N"){
+  if (event.shiftKey && event.key == "N") {
     localStorage.clear();
-    document.body.innerHTML = '';
+    document.body.innerHTML = "";
   }
 
-
   // * SHIFT+A Creates New Div * //
-  if (event.shiftKey && event.key === 'A') {
+  if (event.shiftKey && event.key === "A") {
     let div = createDIV();
     if (core.id(getID()).className == "el block") {
       return;
@@ -202,7 +213,7 @@ document.addEventListener("keydown", function (event) {
   }
 
   // check if the Shift and C keys were pressed simultaneously
-  if (event.shiftKey && event.key === 'C') {
+  if (event.shiftKey && event.key === "C") {
     let color = core.id(getID()).style.backgroundColor;
     // create a new <input> element with type="color"
     const colorPicker = document.createElement("div");
@@ -216,7 +227,10 @@ document.addEventListener("keydown", function (event) {
     core.id(getID()).appendChild(colorPicker);
 
     core.id("color-picker").addEventListener("change", function () {
-      core.id("color-picker").parentElement.parentElement.style.backgroundColor = core.id("color-picker").value;
+      core.id(
+        "color-picker"
+      ).parentElement.parentElement.style.backgroundColor =
+        core.id("color-picker").value;
     });
 
     // remove the color picker when the user clicks outside of it
@@ -231,136 +245,147 @@ document.addEventListener("keydown", function (event) {
   }
 
   //! ROTATE FLEX
-  if (event.shiftKey && event.key === 'R') {
-    if(core.id(getID()).style.flexDirection == "column"){
+  if (event.shiftKey && event.key === "R") {
+    if (core.id(getID()).style.flexDirection == "column") {
       core.id(getID()).style.flexDirection = "row";
-    }else{
+    } else {
       core.id(getID()).style.flexDirection = "column";
     }
   }
 
-
   //! Delete Div
   if (event.key === "Delete" || event.key === "Backspace") {
-    if((getID() != "edit" || getID() != -1) && local.get('typing') != 1){
-      console.log(local.get('typing'));
+    if ((getID() != "edit" || getID() != -1) && local.get("typing") != 1) {
+      console.log(local.get("typing"));
       core.id(getID()).remove();
     }
   }
 
-  if (event.shiftKey && event.key === 'G') {
+  if (event.shiftKey && event.key === "G") {
     // TODO  Shift G to Group divs (nest inside a new div)
   }
 
   //! on selected div, h to auto height, w to auto width. (cycle from auto to 100%)
 
-  if(event.shiftKey && event.key === "H"){
-    if(core.id(getID()).style.height == "auto"){
+  if (event.shiftKey && event.key === "H") {
+    if (core.id(getID()).style.height == "fit-content") {
       core.id(getID()).style.height = "100%";
-    }else{
-      core.id(getID()).style.height = "auto";
+    } else {
+      core.id(getID()).style.height = "fit-content";
     }
     CheckHW();
   }
 
-  if(event.shiftKey && event.key === "W"){
-    if(core.id(getID()).style.width == "auto"){
+  if (event.shiftKey && event.key === "W") {
+    if (core.id(getID()).style.width == "fit-content") {
       core.id(getID()).style.width = "100%";
-    }else{
-      core.id(getID()).style.width = "auto";
+    } else {
+      core.id(getID()).style.width = "fit-content";
     }
     CheckHW();
   }
 
   //! Cycle through flex justify options
 
-  if(event.shiftKey && event.key === '{'){
+  if (event.shiftKey && event.key === "{") {
     let flexOption = 0;
-    try{flexOption = local.get("flex");}catch{
-      
+    try {
+      flexOption = local.get("flex");
+    } catch {}
+    const options = [
+      "flex-start",
+      "center",
+      "flex-end",
+      "space-between",
+      "space-around",
+    ];
+
+    if (flexOption <= 0) {
+      flexOption = 4;
+    } else {
+      flexOption--;
     }
-    const options = ['flex-start', 'center', 'flex-end', 'space-between', 'space-around'];
 
-      if(flexOption <= 0){flexOption = 4}else{flexOption--;};
+    console.log(flexOption);
 
-      console.log(flexOption);
-
-      core.id(getID()).style.justifyContent = options[flexOption];
-      local.set("flex",flexOption);
+    core.id(getID()).style.justifyContent = options[flexOption];
+    local.set("flex", flexOption);
   }
 
-  if(event.shiftKey && event.key === '}'){
+  if (event.shiftKey && event.key === "}") {
     let flexOption = 0;
-    try{flexOption = local.get("flex");}catch{
-      
+    try {
+      flexOption = local.get("flex");
+    } catch {}
+    const options = [
+      "flex-start",
+      "center",
+      "flex-end",
+      "space-between",
+      "space-around",
+    ];
+
+    if (flexOption >= 4) {
+      flexOption = 0;
+    } else {
+      flexOption++;
     }
-    const options = ['flex-start', 'center', 'flex-end', 'space-between', 'space-around'];
 
-      if(flexOption >= 4){flexOption = 0}else{flexOption++;};
+    console.log(flexOption);
 
-      console.log(flexOption);
-
-      core.id(getID()).style.justifyContent = options[flexOption];
-      local.set("flex",flexOption);
+    core.id(getID()).style.justifyContent = options[flexOption];
+    local.set("flex", flexOption);
   }
-
 });
 
-function CheckHW(){
-  try{
-    if(core.id(getID()).style.width == "auto"){
-      if(core.id(getID()).style.height == "auto"){
+function CheckHW() {
+  try {
+    if (core.id(getID()).style.width == "fit-content") {
+      if (core.id(getID()).style.height == "fit-content") {
         core.id(getID()).style.resize = "none";
-      }else{
+      } else {
         core.id(getID()).style.resize = "vertical";
       }
-    }else{
-      if(core.id(getID()).style.height == "auto"){
+    } else {
+      if (core.id(getID()).style.height == "fit-content") {
         core.id(getID()).style.resize = "horizontal";
       }
     }
-  }catch{
-    
-  }
+  } catch {}
 }
-
-
 
 //!  Inf. Scroll down
 
 let prevScrollY = window.scrollY;
 let bottomReached = false;
 
-window.addEventListener('scroll', function() {
+window.addEventListener("scroll", function () {
   const scrollY = window.scrollY;
   const windowHeight = window.innerHeight;
 
-  let heightAdj = (scrollY + prevScrollY);
+  let heightAdj = scrollY + prevScrollY;
 
-  if(heightAdj < windowHeight && getID() >= 0 && getID() != null){
-    document.body.style.paddingBottom = (scrollY + prevScrollY)/2 + "px";
+  if (heightAdj < windowHeight && getID() >= 0 && getID() != null) {
+    document.body.style.paddingBottom = (scrollY + prevScrollY) / 2 + "px";
     prevScrollY = scrollY;
-  }else if(heightAdj < windowHeight){
+  } else if (heightAdj < windowHeight) {
     document.body.style.paddingBottom = 0;
   }
 });
 
-
-function save(){
-  local.set('save',data.toJSON(document.body));
-  console.log('file saved locally...');
+function save() {
+  local.set("save", data.toJSON(document.body));
+  console.log("file saved locally...");
 }
 
-function load(){
-  try{
-    let loadfile = JSON.parse(local.get('save')).html;
+function load() {
+  try {
+    let loadfile = JSON.parse(local.get("save")).html;
     document.body.innerHTML = loadfile;
-  }catch{
+  } catch {
     console.error("No save found...");
   }
 }
-
-
 
 // TODO  Change border-radius
 
@@ -374,13 +399,10 @@ function load(){
 
 // TODO  Shift Click to highlight multiple.
 
-
-
 // TODO  Click to view settings
 // TODO  Flex settings
 // TODO  Click and Drag to rearrange
 // TODO  Drag and Drop Images in specific Divs
-
 
 // TODO  Save Components
 
