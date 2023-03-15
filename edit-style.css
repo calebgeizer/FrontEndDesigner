@@ -1,0 +1,67 @@
+/** Standard Flex Styling Structure **/
+
+body#edit {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: auto;
+    min-height: 100vh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 1rem;
+}
+
+div.block {
+    display: block!important;
+}
+
+.color-picker {
+    z-index: 9999;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    flex-grow: 1;
+    padding: 1rem;
+}
+
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 1rem;
+}
+
+body#edit div.el {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid lightgray;
+    width: 100%;
+    height: 200px;
+    margin: 20px 0px;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: auto;
+    max-height:100%;
+    max-width: 100%;
+}
+
+body#edit div.el div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin:0;
+}
+
