@@ -1,10 +1,12 @@
 import * as local from "./modules/localStorage.js";
 import * as core from "./modules/basicUsability.js";
-import * as data from "./modules/HtmlToJson.js";
+import * as data from "./modules/convert.js";
 import * as edit from "./modules/edit.js";
 
 // Shortcuts List
-import { shortcuts } from "./shortcuts.js";
+import { shortcutsList } from "./shortcuts.js";
+
+let shortcuts = shortcutsList;
 shortcuts = shortcuts.reduce((acc, {myId, ...x}) => { acc[myId] = x; return acc}, {})
 
 console.group("Shortcuts");
@@ -169,6 +171,10 @@ document.addEventListener("keydown", function (event) {
 
   if(event.shiftKey && event.key === 'S'){
     save();
+  }
+
+  if(event.shiftKey && event.key === 'D'){
+    data.saveHTML();
   }
 
   if(event.shiftKey && event.key === 'L'){
@@ -377,7 +383,5 @@ function load(){
 
 
 // TODO  Save Components
-// TODO  Export Code
-
 
 //! BUGS

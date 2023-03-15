@@ -19,4 +19,20 @@ function toHTML(content){
     return bodyHtml;
 }
 
-export { toJSON, toHTML};
+function saveHTML() {
+  // Get the HTML content of the whole document
+  const html = document.documentElement.outerHTML;
+
+  // Create a blob from the HTML content
+  const blob = new Blob([html], {type: 'text/html'});
+
+  // Create a download link
+  const link = document.createElement('a');
+  link.download = 'index.html';
+  link.href = URL.createObjectURL(blob);
+
+  // Click the link to start the download
+  link.click();
+}
+
+export { toJSON, toHTML, saveHTML }; 

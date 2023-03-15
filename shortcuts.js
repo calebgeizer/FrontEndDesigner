@@ -1,4 +1,4 @@
-let shortcuts = [
+let shortcutsList = [
     {
       myId: "SHIFT+A",
       description: "Creates a new div",
@@ -44,13 +44,17 @@ let shortcuts = [
       description: "Loads the saved document from local storage",
     },
     {
+      myId: "SHIFT+D",
+      description: "Downloads the document as a HTML file",
+    },
+    {
       myId: "SHIFT+N",
       description: "Clears local storage and deletes all divs",
     },
     {
-      myId: "Inf. Scroll Down",
-      description: "Adjusts padding bottom of body to half of scroll height for selected div",
+      myId: "On Click Scroll Down",
+      description: "Allows you to scroll down to adjust the selected div",
     }
   ];
 
-export {shortcuts};
+export {shortcutsList};
