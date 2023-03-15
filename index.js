@@ -1,7 +1,7 @@
 import * as local from "./modules/localStorage.js";
 import * as core from "./modules/basicUsability.js";
 import * as data from "./modules/HtmlToJson.js";
-import * as edit from "./modules/gotoend.js";
+import * as edit from "./modules/edit.js";
 
 // Shortcuts List
 import { shortcuts } from "./shortcuts.js";
